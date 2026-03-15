@@ -1,5 +1,5 @@
 import os
-from langchain_chroma import Chroma
+from langchain_community.vectorstores import Chroma
 from langchain_openai import ChatOpenAI
 from dotenv import load_dotenv
 from langchain_community.embeddings import HuggingFaceEmbeddings
@@ -37,12 +37,14 @@ llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
 # --- Helper functions ---
 def fetch_context(question: str):
     """Retrieve relevant documents for a question."""
+    print("Retrieved docs:", len(retriever.invoke(question)))
     return retriever.invoke(question)
 
 def answer_question(question: str):
     """Answer the question using RAG logic."""
     docs = fetch_context(question)
     context = "\n\n".join(doc.page_content for doc in docs)
+    print(context)
 
     prompt = SYSTEM_PROMPT.format(context=context) + f"\n\nQuestion: {question}"
     response = llm.invoke(prompt)
@@ -50,7 +52,7 @@ def answer_question(question: str):
 
 # --- Example usage ---
 if __name__ == "__main__":
-    query = "What workouts did I do in the first week of January?"
+    query = "What workout did I do in the first week of January?"
     answer, source_docs = answer_question(query)
     
     print("\n=== Answer ===\n")

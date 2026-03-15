@@ -3,7 +3,7 @@
 import json
 import os
 from langchain_community.vectorstores import Chroma
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_community.embeddings import HuggingFaceEmbeddings
 # Absolute paths (to match your create_documents script)
 project_root = "/Users/harsha/projects/journal-rag"
 docs_path = os.path.join(project_root, "data/processed/journal_docs.json")
